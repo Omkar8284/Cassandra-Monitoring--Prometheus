@@ -1,0 +1,77 @@
+# /opt/jmx_exporter/config.yaml
+---
+startDelaySeconds: 0
+hostPort: 192.168.96.74:7199
+ssl: false
+lowercaseOutputName: true
+lowercaseOutputLabelNames: true
+rules:
+  # Capture Count metrics
+  - pattern: 'org.apache.cassandra.metrics<type=(\w+), name=(\w+)><>Count'
+    name: cassandra_$1_$2_count
+    type: GAUGE
+  # General metrics
+  - pattern: 'org.apache.cassandra.metrics<type=(\w+), name=(\w+)>'
+    name: cassandra_$1_$2
+    type: GAUGE
+  # Specific metrics for ClientRequest ReadLatency and WriteLatency
+  - pattern: 'org.apache.cassandra.metrics<type=ClientRequest, scope=Read,  name=Latency>'
+    name: cassandra_client_request_read_latency
+    type: GAUGE
+    help: Read latency for client requests
+  - pattern: 'org.apache.cassandra.metrics<type=ClientRequest, scope=Write, name=Latency>'
+    name: cassandra_client_request_write_latency
+    type: GAUGE
+    help: Write latency for client requests
+  # Specific metrics for Storage Load and TotalHints
+  - pattern: 'org.apache.cassandra.metrics<type=Storage, name=Load>'
+    name: cassandra_storage_load
+    type: GAUGE
+    help: Load on storage
+  - pattern: 'org.apache.cassandra.metrics<type=Storage, name=TotalHints>'
+    name: cassandra_storage_total_hints
+    type: GAUGE
+    help: Total hints in storage
+  # Keyspace metrics
+  - pattern: 'org.apache.cassandra.metrics<type=Keyspace, keyspace=(\w+), name=ReadLatency>'
+    name: cassandra_keyspace_read_latency
+    type: GAUGE
+    help: Read latency per keyspace
+    labels:
+      keyspace: "$1"
+  - pattern: 'org.apache.cassandra.metrics<type=Keyspace, keyspace=(\w+), name=WriteLatency>
+    name: cassandra_keyspace_write_latency
+    type: GAUGE
+    help: Write latency per keyspace
+    labels:
+      keyspace: "$1"
+  - pattern: 'org.apache.cassandra.metrics<type=Keyspace, keyspace=(\w+), name=PendingTasks>'
+    name: cassandra_keyspace_pending_tasks
+    type: GAUGE
+    help: Pending tasks per keyspace
+    labels:
+      keyspace: "$1"
+  - pattern: 'org.apache.cassandra.metrics<type=Keyspace, keyspace=(\w+), name=LiveDiskSpaceUsed>'
+    name: cassandra_keyspace_live_disk_space_used
+    type: GAUGE
+    help: Live disk space used per keyspace
+    labels:
+      keyspace: "$1"
+  - pattern: 'org.apache.cassandra.metrics<type=Keyspace, keyspace=(\w+), name=TotalDiskSpaceUsed>'
+    name: cassandra_keyspace_total_disk_space_used
+    type: GAUGE
+    help: Total disk space used per keyspace
+    labels:
+      keyspace: "$1"
+  - pattern: 'org.apache.cassandra.metrics<type=Keyspace, keyspace=(\w+), name=MeanRowSize>'
+    name: cassandra_keyspace_mean_row_size
+    type: GAUGE
+    help: Mean row size per keyspace
+    labels:
+      keyspace: "$1"
+  - pattern: 'org.apache.cassandra.metrics<type=Keyspace, keyspace=(\w+), name=MaxRowSize>'
+    name: cassandra_keyspace_max_row_size
+    type: GAUGE
+    help: Max row size per keyspace
+    labels:
+      keyspace: "$1"
