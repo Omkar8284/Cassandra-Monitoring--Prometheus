@@ -1,7 +1,7 @@
 # /opt/jmx_exporter/config.yaml
 ---
 startDelaySeconds: 0
-hostPort: 192.168.96.74:7199
+hostPort: 192.168.96.74:7199 #yoursystemip
 ssl: false
 lowercaseOutputName: true
 lowercaseOutputLabelNames: true
